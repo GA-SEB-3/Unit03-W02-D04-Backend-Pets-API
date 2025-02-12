@@ -11,6 +11,5 @@ router.get("/pets",(req,res)=>{
     res.json({message:"Success"})
 })
 
-
 // export the router
 module.exports = router
