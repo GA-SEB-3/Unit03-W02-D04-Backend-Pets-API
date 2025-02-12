@@ -5,6 +5,8 @@ const router = require("express").Router()
 const mongoose = require("mongoose")
 
 
+
+
 // 1. endpoint path
 // 2. function that will run when we get the request
 
@@ -31,8 +33,9 @@ router.post("/",async (req,res)=>{
 
 router.get("/:petId",async(req,res)=>{
     try{
+   
         if(!mongoose.Types.ObjectId.isValid(req.params.petId)){
-           return res.status(404).json({err:"Id Not in proper format"})
+            return res.status(404).json({err:"Pet Id not proper structure"})
         }
 
         const foundPet = await Pet.findById(req.params.petId)
@@ -76,6 +79,20 @@ router.get('/:petId', async (req, res) => {
 
 
     }catch(err){
+        res.status(500).json({err:err.message})
+    }
+  })
+
+  router.delete("/:petId",async(req,res)=>{
+    try{
+        const deletedPet = await Pet.findByIdAndDelete(req.params.petId)
+        if(!deletedPet){
+            return res.status(404).json({err:"Pet not Found"})
+        }
+        res.status(200).json(deletedPet)
+
+    }
+    catch(err){
         res.status(500).json({err:err.message})
     }
   })
