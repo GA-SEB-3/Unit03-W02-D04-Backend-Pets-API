@@ -4,6 +4,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const logger = require('morgan');
+const cors = require("cors")
+
 const petController = require("./controllers/pet.routes")
 
 mongoose.connect(process.env.MONGODB_URI);
@@ -14,6 +16,8 @@ mongoose.connection.on('connected', () => {
 
 app.use(express.json());
 app.use(logger('dev'));
+
+app.use(cors({origin:process.env.FRONTEND_URL }))
 
 // Routes go here
 app.use("/pets",petController)
