@@ -7,12 +7,19 @@ const router = require("express").Router()
 // 1. endpoint path
 // 2. function that will run when we get the request
 
-router.get("/",(req,res)=>{
-    res.json({message:"Success"})
+router.get("/",async (req,res)=>{
+    try{
+        const allPets = await Pet.find()
+        res.status(200).json(allPets)
+    }
+    catch(err){
+        res.status(500).json({err:err.message})
+    }
 })
 
 router.post("/",async (req,res)=>{
     try{
+
         const createdPet = await Pet.create(req.body)
         res.status(201).json(createdPet)    
     }
@@ -20,6 +27,8 @@ router.post("/",async (req,res)=>{
         res.status(500).json({err: err.message})
     }
 })
+
+
 
 // export the router
 module.exports = router
